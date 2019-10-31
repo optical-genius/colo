@@ -28,3 +28,5 @@ Route::bind('hosts', function($value, $route) {
 
 //Model routes
 Route::resource('hosts', 'HostController');
+
+Route::resource('ips', 'IpController');

@@ -28,6 +28,7 @@ class HostController extends Controller
 	 */
 	public function index(Request $request)
 	{
+
 		$hosts = Host::orderBy('host_name', 'asc')->get();
 		return view('hosts.index', compact('hosts'));
 	}
@@ -68,6 +69,7 @@ class HostController extends Controller
 
 	public function edit(Host $host)
 	{
+
 		//check if id property exists
 		if (!$host->id) {
 			abort(403, 'This host no longer exists in the database.');
@@ -96,7 +98,12 @@ class HostController extends Controller
 			abort(403, 'This host no longer exists in the database.');
 		}
 		//delete host
+        //dd($host->relationship($host)->detach());
+        $host->relationship($host)->detach();
+
 		$host->delete();
+
+
 
 		return Redirect::to('/hosts/')->with('message', 'Host deleted.');
 	}
