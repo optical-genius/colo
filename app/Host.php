@@ -33,6 +33,7 @@ class Host extends NeoEloquent
 	    return $this->morphMany('App\Relation','TO');
 	}
 
+
 }
 
 ?>

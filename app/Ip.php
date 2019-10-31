@@ -33,6 +33,11 @@ class Ip extends NeoEloquent
 	    return $this->morphMany('App\Relation','TO');
 	}
 
+    public function hosts()
+    {
+        return $this->morphMany('App\Relation','TO', 'RELATION');
+    }
+
 }
 
 ?>

@@ -9,6 +9,7 @@ use App\User;
 use App\Relation;
 use Auth;
 use Redirect;
+use Vinelab\NeoEloquent\Eloquent\Edges\EdgeIn;
 
 class IpController extends Controller
 {
@@ -29,9 +30,24 @@ class IpController extends Controller
 	 */
 	public function index(Request $request)
 	{
+        $ip = Ip::find(31);
+        $relation = $ip->hosts()->get();
+        dd($relation);
+       // $rel = $ip->whichRelation()->first();
 
-		$ips = Ip::orderBy('ip_name', 'asc')->get();
-		return view('ips.index', compact('ips'));
+       // $rela = Relation::find(41);
+
+       // $host = $rela->subject()->get();
+       // dd($host);
+
+
+        $ips = Ip::orderBy('ip_name', 'asc')->get();
+
+
+
+
+        return view('ips.index', compact('ips'));
+
 	}
 
 	public function create(Ip $ip, Request $request)
@@ -60,7 +76,7 @@ class IpController extends Controller
 		if ($request->has('object_id')) {
 			if ($request->input('object_id') <> 0) {
 				$object = Ip::where('id',$request->input('object_id'))->first();
-				$host->relationship($object)->create(['ip_name' => 'has a relation to']);
+				$host->relationship($object)->create(['relation_name' => 'has a relation to', 'relation_description' => 'has a relation to']);
 			}
 		}
 

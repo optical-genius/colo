@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Host;
 use App\User;
+use App\Ip;
 use App\Relation;
 use Auth;
 use Redirect;
@@ -28,19 +29,21 @@ class HostController extends Controller
 	 */
 	public function index(Request $request)
 	{
-
 		$hosts = Host::orderBy('host_name', 'asc')->get();
 		return view('hosts.index', compact('hosts'));
 	}
 
 	public function create(Host $host, Request $request)
 	{
-		$hosts = Host::orderBy('host_name', 'asc')->get();
-		return view('hosts.create', compact('hosts'));
+	    $ips = Ip::findOrFail($request['id']);
+		//$hosts = Host::orderBy('host_name', 'asc')->get();
+		return view('hosts.create', compact('ips'));
 	}
 
 	public function store(Request $request)
 	{
+
+
 		//validate input form
 		$this->validate($request, [
 			'host_name' => 'required|min:3',
@@ -50,18 +53,24 @@ class HostController extends Controller
 		//find user
 		$user = User::find(Auth::user()->id);
 
+		$ip = Ip::find($request['object_id']);
+
+
+
 		//create host
 		$host = Host::create(['host_name' => $request->input('host_name'), 'host_definition' => $request->input('host_definition')]);
 
 		//attach new host to user
 		$user->hosts()->attach($host);
 
+
+
 		//if object has been set, create relation
-		if ($request->has('object_id')) {
-			if ($request->input('object_id') <> 0) {
-				$object = Host::where('id',$request->input('object_id'))->first();
+		if ($request['object_id']) {
+
+				$object = Ip::find($ip['id']);
 				$host->relationship($object)->create(['relation_name' => 'has a relation to', 'relation_description' => 'has a relation to']);
-			}
+
 		}
 
 		return Redirect::to('/hosts/')->with('message', 'Host created.');
