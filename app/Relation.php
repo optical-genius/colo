@@ -18,6 +18,11 @@ class Relation extends NeoEloquent
         return $this->morphMany('App\Host','TO');
     }
 
+    public function object()
+    {
+        return $this->morphMany('App\Host','RELATION');
+    }
+
 }
 
 ?>

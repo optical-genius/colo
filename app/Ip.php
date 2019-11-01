@@ -3,6 +3,7 @@
 namespace App;
 
 use NeoEloquent;
+use Vinelab\NeoEloquent\Eloquent\Edges\Finder;
 
 class Ip extends NeoEloquent
 {
@@ -36,6 +37,15 @@ class Ip extends NeoEloquent
     public function hosts()
     {
         return $this->morphMany('App\Relation','TO', 'RELATION');
+    }
+
+
+    public static function ipFakerCreate()
+    {
+        //$fakeIP = factory(Ip::class, 10)->create();
+        $fakeIP = factory(Ip::class, 1000)->make();
+        return $fakeIP;
+        // Использование модели в тестах...
     }
 
 }

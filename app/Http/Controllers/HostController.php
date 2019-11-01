@@ -73,7 +73,7 @@ class HostController extends Controller
 
 		}
 
-		return Redirect::to('/hosts/')->with('message', 'Host created.');
+		return Redirect::to('/ips/')->with('message', 'Host created.');
 	}
 
 	public function edit(Host $host)
