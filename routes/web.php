@@ -30,3 +30,5 @@ Route::bind('hosts', function($value, $route) {
 Route::resource('hosts', 'HostController');
 
 Route::resource('ips', 'IpController');
+
+Route::get('cypher', 'IpController@testcypher');

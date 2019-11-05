@@ -10,9 +10,11 @@ use App\User;
 use App\Relation;
 use Auth;
 use Redirect;
+use Neo4jClient;
 
 class IpController extends Controller
 {
+
     /**
      * Create a new controller instance.
      *
@@ -21,6 +23,13 @@ class IpController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function testcypher()
+    {
+        $test = Neo4jClient::run('MATCH (n:Ip) RETURN n.ip_name LIMIT 200');
+        //$records = $test->getRecords();
+        dd($test);
     }
 
     /**
