@@ -6,33 +6,43 @@ use NeoEloquent;
 
 class Host extends NeoEloquent
 {
-	protected $label = 'Host';
+    protected $label = 'Host';
 
-	protected $guarded = [];
-	public $timestamps = false;
+    protected $guarded = [];
+    public $timestamps = false;
 
-	protected $fillable = ['host_name','host_definition'];
+    protected $fillable = ['host_name', 'host_definition'];
 
-	public function author()
+    public function author()
     {
         return $this->belongsTo('App\User', 'CREATED');
     }
 
-	public function relationship($morph=null)
-	{
-	    return $this->hyperMorph($morph, 'App\Relation', 'RELATION', 'TO');
-	}
+    public function relationship($morph = null)
+    {
+        return $this->hyperMorph($morph, 'App\Relation', 'RELATION', 'TO');
+    }
 
-	public function object()
-	{
-	    return $this->belongsToMany('App\Host', 'RELATION');
-	}
+    public function objectIp()
+    {
+        return $this->belongsToMany('App\Ip', 'RELATION');
+    }
 
-	public function whichRelation()
-	{
-	    return $this->morphMany('App\Relation','TO');
-	}
+    public function object()
+    {
+        return $this->belongsToMany('App\Host', 'RELATION');
+    }
 
+    public function whichRelation()
+    {
+        return $this->morphMany('App\Relation', 'TO');
+    }
+
+
+    public function ip()
+    {
+        return $this->morphMany('App\Ip', 'RELATION');
+    }
 
 }
 

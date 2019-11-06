@@ -27,9 +27,13 @@ class IpController extends Controller
 
     public function testcypher()
     {
-        $test = Neo4jClient::run('MATCH (n:Ip) RETURN n.ip_name LIMIT 200');
-        //$records = $test->getRecords();
-        dd($test);
+//        $test = Ip::find(31);
+//        $test1 = $test->whichRelationHost()->get();
+        $start = microtime(true);
+        $memorylim = memory_get_usage() / 1024;
+        $test = Neo4jClient::run('MATCH (n:Ip) RETURN n.ip_name LIMIT 2000');
+        $records = $test->getRecords();
+        dd($start, $memorylim, $records);
     }
 
     /**
@@ -41,13 +45,14 @@ class IpController extends Controller
     {
         $start = microtime(true);
 
-       //$user = User::find(Auth::user()->id);
 
+//       $user = User::find(Auth::user()->id);
+//       $fake = Ip::ipFakerCreate();
+//       $user->ips()->attach($fake);
 
-
-
-        //$fake = Ip::ipFakerCreate();
-        //$user->ips()->attach($fake);
+//        $ip = Ip::find(4184);
+//        $fake = Ip::hostFakerCreate();
+//        $ip->objectHost()->attach($fake);
 
 
         /**
@@ -61,24 +66,27 @@ class IpController extends Controller
          * $rel = $ip->whichRelation()->first()->object()->get();
          */
 
-        $ips = Ip::all();
-        $host = array();
-        foreach ($ips as $ip) {
+//        $ips = Ip::all();
+//        $host = array();
+//        foreach ($ips as $ip) {
+//
+//            $relations = $ip->whichRelation()->get();
+//            if (empty($relations->first())) {
+//                $host[] = array('ip_name' => $ip['ip_name'], 'ip_id' => $ip['id']);
+//            } else {
+//                foreach ($relations as $relation) {
+//                    $hosts = $relation->object()->get();
+//                    $host[] = array('ip_name' => $ip['ip_name'], 'ip_id' => $ip['id'], 'host_name' => $hosts->first()['host_name']);
+//                }
+//            }
+//        }
+//
+//        $testhost = collect($host);
+//        $grouped = $testhost->groupBy('ip_name');
 
-            $relations = $ip->whichRelation()->get();
-            if (empty($relations->first())) {
-                $host[] = array('ip_name' => $ip['ip_name'], 'ip_id' => $ip['id']);
-            } else {
-                foreach ($relations as $relation) {
-                    $hosts = $relation->object()->get();
-                    $host[] = array('ip_name' => $ip['ip_name'], 'ip_id' => $ip['id'], 'host_name' => $hosts->first()['host_name']);
-                }
-            }
-        }
 
-        $testhost = collect($host);
-        $grouped = $testhost->groupBy('ip_name');
-        $memorylim = memory_get_usage()/1024;
+        $grouped = Ip::with('host')->get();
+        $memorylim = memory_get_usage() / 1024;
         return view('ips.index', compact('grouped', 'start', 'memorylim'));
 
     }
@@ -110,6 +118,7 @@ class IpController extends Controller
             if ($request->input('object_id') <> 0) {
                 $object = Ip::where('id', $request->input('object_id'))->first();
                 $host->relationship($object)->create(['relation_name' => 'has a relation to', 'relation_description' => 'has a relation to']);
+
             }
         }
 

@@ -32,3 +32,5 @@ Route::resource('hosts', 'HostController');
 Route::resource('ips', 'IpController');
 
 Route::get('cypher', 'IpController@testcypher');
+
+Route::get('ipfaker', 'IpController@ipFakerCreate');
