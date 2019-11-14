@@ -14,20 +14,15 @@
 			{!! Form::textarea('host_definition', null, ['class' => 'form-control', 'rows' => '4']) !!}
 		</div>
 	</div>
-	
-	<div class="form-group">
-	@if (empty($host))
-		{!! Form::label('relation_to_object', 'Link to object:', array('class' => 'col-sm-3 control-label')) !!}
-		<div class="col-sm-6">
-		<select name="object_id" class="form-control">
-		<option value="0">select host</option>
-		@foreach($hosts as $host)
-			<option value="{{ $host->id }}">{{ $host->host_name }}</option>
-		@endforeach
-		</select>
-		</div>
-	@endif
-	</div>
+
+    <div class="form-group">
+        <div class="col-sm-6">
+            Add host to ip: {{$ips->ip_name}}
+            <input type="hidden" name="object_id" value="{{$ips->id}}">
+        </div>
+    </div>
+
+
 
 	<div class="form-group" style="float:left; margin-top: 10px;">
 		{!! Form::submit($submit_text, ['class' => 'btn btn-primary', 'name' => 'create']) !!}

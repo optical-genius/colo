@@ -44,4 +44,10 @@ class User extends NeoEloquent implements
     {
         return $this->hasMany('App\Host', 'CREATED');
     }
+
+    public function ips()
+    {
+        return $this->hasMany('App\Ip', 'CREATED');
+    }
+
 }

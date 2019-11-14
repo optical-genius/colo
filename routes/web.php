@@ -28,3 +28,9 @@ Route::bind('hosts', function($value, $route) {
 
 //Model routes
 Route::resource('hosts', 'HostController');
+
+Route::resource('ips', 'IpController');
+
+Route::get('cypher', 'IpController@testcypher');
+
+Route::get('ipfaker', 'IpController@ipFakerCreate');

@@ -152,6 +152,8 @@ return [
          */
         Vinelab\NeoEloquent\NeoEloquentServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
+        TSF\Neo4jClient\Neo4jServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -211,6 +213,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Neo4jClient' => TSF\Neo4jClient\Facades\Neo4jClient::class,
 
     ],
 
