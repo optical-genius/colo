@@ -55,6 +55,15 @@ class Ip extends NeoEloquent
         return $this->morphTo();
     }
 
+
+    public static function testFake()
+    {
+        factory(Ip::class, 200)->create()->each(function ($ip) {
+            $ip->host()->saveMany(factory(Host::class, 5)->make());
+        });
+    }
+
+
     public static function hostFakerCreate()
     {
         $fakeHost = factory(Host::class, 10)->create();

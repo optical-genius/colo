@@ -31,9 +31,10 @@ class IpController extends Controller
 //        $test1 = $test->whichRelationHost()->get();
         $start = microtime(true);
         $memorylim = memory_get_usage() / 1024;
-        $test = Neo4jClient::run('MATCH (n:Ip) RETURN n.ip_name LIMIT 2000');
+        //$test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, h.host_name LIMIT 6000');
+        $test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, collect(distinct h.host_name) LIMIT 6000');
         $records = $test->getRecords();
-        dd($start, $memorylim, $records);
+        return view('testcypher', compact('records', 'memorylim', 'start'));
     }
 
     /**
@@ -44,6 +45,9 @@ class IpController extends Controller
     public function index(Request $request)
     {
         $start = microtime(true);
+
+
+//        $testfake = Ip::testFake();
 
 
 //       $user = User::find(Auth::user()->id);
@@ -85,7 +89,7 @@ class IpController extends Controller
 //        $grouped = $testhost->groupBy('ip_name');
 
 
-        $grouped = Ip::with('host')->get();
+        $grouped = Ip::with('host')->take(200)->get();
         $memorylim = memory_get_usage() / 1024;
         return view('ips.index', compact('grouped', 'start', 'memorylim'));
 
