@@ -27,14 +27,35 @@ class IpController extends Controller
 
     public function testcypher()
     {
-//        $test = Ip::find(31);
-//        $test1 = $test->whichRelationHost()->get();
         $start = microtime(true);
         $memorylim = memory_get_usage() / 1024;
-        //$test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, h.host_name LIMIT 6000');
-        $test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, collect(distinct h.host_name) LIMIT 6000');
+//        $test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, h.host_name LIMIT 6000');
+//      $test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN { id: ID(n), ip_name: n.ip_name }, collect(distinct { id: ID(h), host_name: h.host_name }) LIMIT 100');
+      $test = Neo4jClient::run('MATCH (n:Ip)-->(h:Host) RETURN n.ip_name, collect(distinct h.host_name) LIMIT 100');
+        //$records = $test->getRecords();
         $records = $test->getRecords();
-        return view('testcypher', compact('records', 'memorylim', 'start'));
+
+
+
+        $vueRecordArray = [];
+        foreach ($records as $vue){
+            $vueRecordArray[] = $vue->values();
+        }
+
+        //dd($vueRecordArray);
+
+
+
+        $vue = Neo4jClient::run('MATCH (n:Ip) RETURN n.ip_name LIMIT 100');
+        $vueRecords = $vue->getRecords();
+        $vueArray = [];
+        foreach ($vueRecords as $vueRecord){
+            $vueArray[] = $vueRecord->values()[0];
+        }
+        $jsonVue = $vueArray;
+
+
+        return view('testcypher', compact('records', 'memorylim', 'start', 'vueRecordArray'));
     }
 
     /**
@@ -89,7 +110,7 @@ class IpController extends Controller
 //        $grouped = $testhost->groupBy('ip_name');
 
 
-        $grouped = Ip::with('host')->take(200)->get();
+        $grouped = Ip::with('host')->take(50)->get();
         $memorylim = memory_get_usage() / 1024;
         return view('ips.index', compact('grouped', 'start', 'memorylim'));
 
