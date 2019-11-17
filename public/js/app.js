@@ -49105,14 +49105,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['records'],
+    data: function data() {
+        // <== changed this line
+        return {
+            items: this.records
+        };
+    },
     mounted: function mounted() {
-        this.records = this.records;
+        //this.records = this.records
         //console.log(this.$props.records)
     },
 
     methods: {
         deleteArray: function deleteArray(index) {
-            this.records.splice(index, 1);
+            console.log(this.records.splice(index, 1));
+            // this.records.splice(index, 1)
             //this.$delete(this.records, index);
         },
         deleteObject: function deleteObject(index) {
@@ -49140,7 +49147,7 @@ var render = function() {
           _c("div", { staticClass: "card-body" }, [
             _c(
               "table",
-              _vm._l(_vm.records, function(item, index) {
+              _vm._l(_vm.items, function(item, index) {
                 return _c("tr", { key: index, attrs: { index: index } }, [
                   _c("td", [_c("b", [_vm._v(_vm._s(index))])]),
                   _vm._v(" "),

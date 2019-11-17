@@ -7,7 +7,7 @@
 
                     <div class="card-body">
                         <table>
-                            <tr v-for="(item, index) in records" :index="index" :key="index">
+                            <tr v-for="(item, index) in items" :index="index" :key="index">
                                 <td><b>{{index}}</b></td>
                                 <td> {{ item['0'] }} </td>
                                 <td> {{ item['1'] }} </td>
@@ -29,13 +29,19 @@
         props: [
             'records'
         ],
+        data() {                                   // <== changed this line
+            return {
+                items: this.records
+            }
+        },
         mounted() {
-            this.records = this.records
+            //this.records = this.records
             //console.log(this.$props.records)
         },
         methods: {
             deleteArray: function(index) {
-                this.records.splice(index, 1)
+                console.log(this.records.splice(index, 1))
+                // this.records.splice(index, 1)
                 //this.$delete(this.records, index);
             },
             deleteObject: function(index) {
